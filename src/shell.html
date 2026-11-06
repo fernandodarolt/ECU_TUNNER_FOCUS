@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Editor 9M55AD • v1.3</title>
+<style>/*__CSS__*/</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="brand-mark">9M</span><div><strong>Editor 9M55AD</strong><small>Visteon · Ford Focus 2.0 · v1.3</small></div><span class="offline"><i></i> LOCAL / OFFLINE</span></div>
+  <nav aria-label="Arquivos"><button id="open-bin" class="button">Abrir BIN</button><button id="open-comparison" class="button compare-button">Comparar BINs</button><button id="open-project" class="button">Abrir projeto</button><span class="divider"></span><button id="save-project" class="button" disabled>Salvar projeto</button><button id="export-bin" class="button primary" disabled>Exportar BIN <span aria-hidden="true">↗</span></button></nav>
+</header>
+<div class="layout">
+<aside class="sidebar">
+  <div class="sidebar-heading"><span class="eyebrow">BIBLIOTECA FIXA</span><h2>Seus mapas <span id="map-total">228</span></h2><p>Endereços da estratégia 9M55AD</p></div>
+  <label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Nome ou endereço…" aria-label="Buscar mapa"></label>
+  <select id="group-filter" aria-label="Grupo de mapas"><option value="">Todos os grupos</option><option>Ignição</option><option>Combustível</option><option>Pedal</option><option>Torque / carga</option><option>Não classificadas</option></select>
+  <div class="list-filters"><button id="filter-all" class="active">Todos</button><button id="filter-changed">Alterados <span id="changed-map-count">0</span></button></div>
+  <div id="map-list" class="map-list" aria-label="Lista de mapas"></div>
+  <div class="sidebar-bottom"><span class="status-dot"></span><div>Processamento no seu computador<small>Nenhum arquivo é enviado à internet.</small></div></div>
+</aside>
+<main>
+  <section id="empty" class="empty-state">
+    <div class="empty-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M12 49V15h40v34zM12 25h40M24 15v34M38 25v24M12 37h40"/></svg></div>
+    <span class="eyebrow">SEU ESPAÇO DE CALIBRAÇÃO</span><h1>Uma visão clara.<br>Controle célula por célula.</h1>
+    <p>Abra uma BIN da sua 9M55AD para editar os mapas em tabela.<br>Selecione uma área, aplique a correção e exporte uma cópia.</p>
+    <div class="empty-actions"><button id="empty-open" class="button primary large">Abrir arquivo da ECU</button><button id="empty-compare" class="button large">Comparar original e modificada</button></div>
+    <div class="empty-steps"><span><b>01</b> Carregue a BIN de 2 MiB</span><span><b>02</b> Ajuste a seleção</span><span><b>03</b> Confira e exporte</span></div>
+    <div class="profile-note"><strong>Perfil específico, definições rastreadas.</strong><p>202 superfícies + 26 curvas e grupos de parâmetros. Combustível, injetores e lambda nominal com indicação de fatos, inferências e pendências.</p></div>
+  </section>
+  <section id="workspace" hidden>
+    <div class="file-strip"><div><span class="file-icon" aria-hidden="true">BIN</span><strong id="filename"></strong><span class="tag">2 MiB</span><span class="tag valid">9M55AD reconhecida</span></div><span id="file-hash" title="SHA256 da base carregada"></span></div>
+    <div id="comparison-strip" class="comparison-strip" hidden><div class="comparison-file original"><span class="eyebrow">ORIGINAL · REFERÊNCIA</span><strong id="reference-name"></strong><small id="reference-hash"></small><small id="reference-checks"></small></div><span class="comparison-arrow" aria-hidden="true">→</span><div class="comparison-file modified"><span class="eyebrow">MODIFICADA · EDIÇÃO / EXPORTAÇÃO</span><strong id="modified-name"></strong><small id="modified-hash"></small><small>As alterações são feitas na cópia de trabalho.</small></div></div>
+    <p id="outside-differences" class="outside-differences" hidden></p>
+    <div class="checksums"><div class="checksum"><span>CHECKSUM PRINCIPAL</span><strong id="checksum-principal"></strong></div><div class="checksum"><span>BOOT</span><strong id="checksum-boot"></strong></div><div class="checksum"><span>VID</span><strong id="checksum-vid"></strong></div><button id="calculate-checksum" class="button">Calcular checksum</button><button id="download-report" class="text-button">Relatório de alterações ↗</button></div>
+    <div class="map-heading"><div><div class="heading-badges"><span id="map-group" class="eyebrow"></span><span id="identified" class="tag"></span></div><h1 id="map-title"></h1><div class="map-meta"><span id="map-address"></span><span id="map-size"></span><span id="map-unit"></span></div></div><div class="history-controls"><button id="undo" class="icon-button" title="Desfazer (Ctrl+Z)" aria-label="Desfazer">↶</button><button id="redo" class="icon-button" title="Refazer (Ctrl+Y)" aria-label="Refazer">↷</button></div></div>
+    <div class="editing-toolbar"><div class="operation"><label for="operation">Correção</label><select id="operation"><option value="add">Somar / subtrair</option><option value="percent">Variação em %</option><option value="multiply">Multiplicar por</option><option value="set">Definir valor</option></select><input id="operand" type="text" inputmode="decimal" value="1" aria-label="Valor da correção"><button id="apply" class="button primary">Aplicar à seleção</button></div><div class="secondary-actions"><button id="select-all" class="button subtle">Selecionar tudo</button><button id="restore" class="button subtle">Restaurar seleção</button><button id="copy" class="button subtle">Copiar</button><button id="paste" class="button subtle">Colar bloco</button></div></div>
+    <div class="table-card"><div class="table-topline"><span id="selection-label"></span><div class="view-controls" aria-label="Visualização"><button data-view="current" class="active">Atual</button><button data-view="base">Base</button><button data-view="compare">Antes/depois</button><button data-view="delta">Diferença</button><select id="precision" aria-label="Casas decimais"><option value="2">2 casas</option><option value="3" selected>3 casas</option><option value="4">4 casas</option><option value="6">6 casas</option></select></div></div>
+      <div id="grid-wrap" class="grid-wrap" tabindex="0" aria-label="Tabela editável. Use arraste ou Shift para selecionar e duplo clique para editar."><table id="grid" role="grid"></table></div>
+      <div class="table-bottom"><span><i class="edited-dot"></i> <b>Negrito</b> = <span id="reference-legend">alterado em relação à base carregada</span></span><span class="scale"><span id="scale-min"></span><i id="scale-bar"></i><span id="scale-max"></span></span></div>
+    </div>
+    <div class="below-grid"><p id="map-note"></p><span id="map-stats"></span></div>
+    <details id="evidence-panel" class="evidence-panel" hidden><summary>Identificação: fatos, inferências e pendências <span id="unit-status" class="tag"></span></summary><div class="evidence-grid"><div><h3>FATO</h3><ul id="evidence-facts"></ul></div><div><h3>INFERÊNCIA</h3><ul id="evidence-inferences"></ul></div><div><h3>DESCONHECIDO</h3><ul id="evidence-unknown"></ul></div></div></details>
+    <div class="shortcuts"><span>Arraste ou <kbd>Shift</kbd> + clique para selecionar</span><span>Duplo clique ou <kbd>Enter</kbd> para editar</span><span><kbd>Ctrl</kbd> + <kbd>C</kbd> / <kbd>V</kbd> para copiar e colar</span></div>
+    <details class="technical"><summary>Detalhes do mapa e da integridade</summary><div id="technical-info"></div><p>O checksum principal é corrigido em 0x15BD8C. Boot e VID são conferidos; regiões inválidas bloqueiam a exportação. Essa verificação é de integridade do arquivo, não de desempenho ou segurança do motor.</p></details>
+  </section>
+  <footer><span id="global-status">Abra uma BIN ou um projeto para começar.</span><span>Perfil 9M55AD · float32 BE · sem conexão com o veículo</span></footer>
+</main>
+</div>
+<input id="bin-file" type="file" accept=".bin,application/octet-stream" hidden>
+<input id="project-file" type="file" accept=".json" hidden>
+<div id="toast" role="status" aria-live="polite" hidden></div>
+<dialog id="clipboard-dialog"><div class="dialog-heading"><h2 id="clipboard-title">Colar bloco</h2><button id="clipboard-close" class="icon-button" aria-label="Fechar">×</button></div><p id="clipboard-note"></p><textarea id="clipboard-text" spellcheck="false" aria-label="Valores do bloco"></textarea><div class="dialog-actions"><button id="clipboard-cancel" class="button">Fechar</button><button id="clipboard-apply" class="button primary">Colar na seleção</button></div></dialog>
+<dialog id="comparison-dialog"><div class="dialog-heading"><h2>Comparar original e modificada</h2><button id="comparison-close" class="icon-button" aria-label="Fechar comparação">×</button></div><p>A original será a referência. A modificada será a cópia de trabalho para editar e exportar. Ambas devem pertencer à estratégia 9M55AD.</p><div class="comparison-pickers"><div><span class="eyebrow">01 · ORIGINAL</span><label for="original-file" class="file-picker">Selecionar ECU original</label><input id="original-file" type="file" hidden><span id="original-picked" class="picked-name">Nenhum arquivo selecionado</span></div><div><span class="eyebrow">02 · MODIFICADA</span><label for="modified-file" class="file-picker">Selecionar ECU modificada</label><input id="modified-file" type="file" hidden><span id="modified-picked" class="picked-name">Nenhum arquivo selecionado</span></div></div><p class="comparison-hint">Na tabela, a original aparece acima e a modificada abaixo. Valores diferentes ficam em negrito. Você também pode alternar para os valores individuais ou para a diferença.</p><div class="dialog-actions"><button id="comparison-cancel" class="button">Cancelar</button><button id="comparison-load" class="button primary" disabled>Comparar mapas</button></div></dialog>
+<script id="fixed-profile" type="application/json">/*__PROFILE__*/</script>
+<script>/*__CORE__*/</script>
+<script>/*__APP__*/</script>
+</body></html>

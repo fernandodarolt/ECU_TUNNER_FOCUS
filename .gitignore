@@ -1,0 +1,34 @@
+# Leituras e projetos de veículo — não publicar
+*.[bB][iI][nN]
+*.[hH][eE][xX]
+*.[pP][hH][fF]
+*.[oO][rR][iI]
+*.[mM][oO][dD]
+*.ecu9.json
+*.ols
+*.drt
+*.csv
+*.CSV
+*.klg
+*.KLG
+*.log
+*.zip
+/ecu
+/ECU
+/ECU2
+logs/
+private/
+privado/
+local/
+backups/
+
+# Arquivos locais de desenvolvimento
+node_modules/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+*.tmp
